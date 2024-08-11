@@ -1,0 +1,21 @@
+package com.authorization.cajuchallenge.repository.configuration;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+@Configuration
+public class MongoCommandConfig {
+
+    @Bean
+    public MongoClient commandMongoClient() {
+        return MongoClients.create("mongodb://root:example@localhost:27017");
+    }
+
+    @Bean
+    public MongoTemplate commandMongoTemplate() {
+        return new MongoTemplate(commandMongoClient(), "command_db");
+    }
+}
