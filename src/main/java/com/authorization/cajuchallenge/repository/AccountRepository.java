@@ -1,9 +1,10 @@
 package com.authorization.cajuchallenge.repository;
 
-import com.authorization.cajuchallenge.model.Transaction;
+import com.authorization.cajuchallenge.model.Account;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TransactionQueryRepository extends MongoRepository<Transaction, String> {
+public interface AccountRepository extends MongoRepository<Account, String> {
+
 }

@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
-public class MongoCommandConfig {
+public class MongoConfig {
 
     @Bean
-    public MongoClient commandMongoClient() {
-        return MongoClients.create("mongodb://root:example@localhost:27017");
+    public MongoClient mongoClient() {
+        return MongoClients.create("mongodb://root:example@localhost:27017/?authSource=admin");
     }
 
     @Bean
-    public MongoTemplate commandMongoTemplate() {
-        return new MongoTemplate(commandMongoClient(), "command_db");
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongoClient(), "your_database_name");
     }
 }

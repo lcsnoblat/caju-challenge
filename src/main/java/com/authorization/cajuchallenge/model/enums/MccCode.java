@@ -1,7 +1,10 @@
 package com.authorization.cajuchallenge.model.enums;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public enum MccCode {
     FOOD(new String[]{"5411", "5412"}),
     MEAL(new String[]{"5811", "5812"}),
@@ -13,14 +16,10 @@ public enum MccCode {
         this.codes = codes;
     }
 
-    public String[] getCodes() {
-        return codes;
-    }
-
-    public static MccCode fromString(String code) {
+    public static String fromString(String code) {
         return Arrays.stream(MccCode.values())
                 .filter(mcc -> Arrays.asList(mcc.getCodes()).contains(code))
                 .findFirst()
-                .orElse(CASH_OTHER);
+                .orElse(CASH_OTHER).toString();
     }
 }

@@ -1,10 +1,9 @@
 package com.authorization.cajuchallenge.service;
 
 import com.authorization.cajuchallenge.model.Transaction;
-import com.authorization.cajuchallenge.model.request.CreateTransactionRequest;
 import com.authorization.cajuchallenge.model.response.CreateTransactionResponse;
-import com.authorization.cajuchallenge.repository.TransactionCommandRepository;
-import com.authorization.cajuchallenge.repository.TransactionQueryRepository;
+import com.authorization.cajuchallenge.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,32 +11,26 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-
-    private final TransactionCommandRepository transactionCommandRepository;
-    private final TransactionQueryRepository transactionQueryRepository;
-
-    public TransactionServiceImpl(TransactionCommandRepository transactionCommandRepository, TransactionQueryRepository transactionQueryRepository) {
-        this.transactionCommandRepository = transactionCommandRepository;
-        this.transactionQueryRepository = transactionQueryRepository;
-    }
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @Override
-    public CreateTransactionResponse authorize(CreateTransactionRequest transactionRequest) {
-        return null;
+    public CreateTransactionResponse authorize(Transaction transactionRequest) {
+
     }
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        return transactionCommandRepository.save(transaction);
+        return transactionRepository.save(transaction);
     }
 
     @Override
     public Transaction getTransactionById(String id) {
-        return transactionQueryRepository.findById(id).orElse(null);
+        return transactionRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Transaction> getAllTransactions() {
-        return transactionQueryRepository.findAll(); // Lê do banco de consulta
+        return transactionRepository.findAll();
     }
 }
