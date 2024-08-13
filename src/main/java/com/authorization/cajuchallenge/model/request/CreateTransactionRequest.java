@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateTransactionRequest {
-    private String accountId;
+    private String account;
     private BigDecimal totalAmount;
     private String mcc;
     private String merchant;

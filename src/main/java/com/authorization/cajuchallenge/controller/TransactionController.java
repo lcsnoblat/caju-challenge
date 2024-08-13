@@ -21,18 +21,14 @@ public class TransactionController {
 
     @PostMapping("/authorize")
     public CreateTransactionResponse authorize(@RequestBody CreateTransactionRequest transactionRequest) {
-        try {
             Transaction transaction = Transaction.builder()
                     .mcc(MccCode.fromString(transactionRequest.getMcc()))
                     .merchant(transactionRequest.getMerchant())
                     .totalAmount(transactionRequest.getTotalAmount())
-                    .accountId(transactionRequest.getAccountId())
+                    .accountId(transactionRequest.getAccount())
                     .build();
 
             return transactionService.authorize(transaction);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @GetMapping("/{id}")
