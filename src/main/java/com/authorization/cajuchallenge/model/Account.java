@@ -16,5 +16,5 @@ public class Account {
     private String name;
     private String email;
     private String accountId;
-    private BigDecimal balance;
+    private BalanceTypes balanceTypes;
 }

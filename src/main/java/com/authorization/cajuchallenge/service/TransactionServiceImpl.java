@@ -3,10 +3,10 @@ package com.authorization.cajuchallenge.service;
 import com.authorization.cajuchallenge.model.Account;
 import com.authorization.cajuchallenge.model.Transaction;
 import com.authorization.cajuchallenge.model.enums.MccCode;
+import com.authorization.cajuchallenge.model.enums.TransactionStatusCode;
 import com.authorization.cajuchallenge.model.response.CreateTransactionResponse;
 import com.authorization.cajuchallenge.repository.AccountRepository;
 import com.authorization.cajuchallenge.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,22 +28,25 @@ public class TransactionServiceImpl implements TransactionService {
     public CreateTransactionResponse authorize(Transaction transactionRequest) {
         Account account = accountRepository.findByAccountId(transactionRequest.getAccountId()).orElse(null);
         BigDecimal amount = transactionRequest.getTotalAmount();
+        MccCode mccCode = MccCode.valueOf(transactionRequest.getMcc());
 
         if (account == null) {
-            return new CreateTransactionResponse("No account");
+            return new CreateTransactionResponse(TransactionStatusCode.ERROR.getCode());
         }
 
-        if (account.getBalance().compareTo(amount) >= 0) {
+        BigDecimal currentBalance = account.getBalanceTypes().getBalanceByMcc(mccCode);
+
+        if (currentBalance.compareTo(amount) >= 0) {
             CompletableFuture.runAsync(() -> {
-                account.setBalance(account.getBalance().subtract(amount));
+                account.getBalanceTypes().deductBalance(mccCode, amount);
                 accountRepository.save(account);
                 transactionRepository.save(transactionRequest);
             });
 
-            return new CreateTransactionResponse("Success");
+            return new CreateTransactionResponse(TransactionStatusCode.SUCCESS.getCode());
         }
 
-        return new CreateTransactionResponse("Fail");
+        return new CreateTransactionResponse(TransactionStatusCode.INSUFFICIENT_FUNDS.getCode());
     }
 
     @Override
