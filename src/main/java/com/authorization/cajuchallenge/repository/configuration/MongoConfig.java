@@ -11,11 +11,11 @@ public class MongoConfig {
 
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create("mongodb://root:example@localhost:27017/?authSource=admin");
+        return MongoClients.create("mongodb://mongo:27017/caju_challenge_db");
     }
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), "your_database_name");
+        return new MongoTemplate(mongoClient(), "caju_challenge_db");
     }
 }
