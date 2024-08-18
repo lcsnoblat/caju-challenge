@@ -1,28 +1,23 @@
 version: '3.8'
 
 services:
-  mongo_command:
-    image: mongo:6
-    container_name: mongo_command
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongo_command_data:/data/db
+      - mongo-data:/data/db
 
-  mongo_query:
-    image: mongo:6
-    container_name: mongo_query
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+  app:
+    build: .
+    container_name: caju-challenge-app
     ports:
-      - "27018:27017"
-    volumes:
-      - mongo_query_data:/data/db
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/caju_challenge_db
 
 volumes:
-  mongo_command_data:
-  mongo_query_data:
+  mongo-data:
