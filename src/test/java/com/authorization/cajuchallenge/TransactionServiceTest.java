@@ -44,6 +44,7 @@ class TransactionServiceTest {
     @BeforeEach
     void setUp() {
         try (AutoCloseable mocks = MockitoAnnotations.openMocks(this)) {
+            // Setup is now within the try-with-resources block to avoid resource leakage
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
